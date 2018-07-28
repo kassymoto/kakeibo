@@ -3,9 +3,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/kakeibo.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="{% static 'css/bootstrap.min.js' %}"></script>
         <title>kakeibo</title>
@@ -25,12 +25,11 @@
             overflow:auto;
             height:600px;/*ここはご自由に*/
             width: 400px;/*ここはご自由に*/
-            background-color: #eee;
+            background-color: rgb(212, 255, 189);
           }
         </style>
     </head>
     <body>
-
     <form acrion="" method="POST">
           {% csrf_token %}
 
