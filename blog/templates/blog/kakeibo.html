@@ -3,34 +3,224 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/kakeibo.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="{% static 'css/bootstrap.min.js' %}"></script>
         <title>kakeibo</title>
         <style>
+          @font-face {
+            font-family: 'MyFont';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://themes.googleusercontent.com/static/fonts/kaushanscript/v1/qx1LSqts-NtiKcLw4N03IFhlQWQpSCpzb2Peu3I-Q34.woff) format('woff');
+          }
+          body{
+            background-color: #353535;
+            color: #353535;
+          }
+          option{
+            color: #353535;
+          }
+          button{
+            color: #353535;
+          }
+          h1{
+            border-bottom:solid 2px #ADFF2F;
+          }
+          h2{
+            border-bottom:solid 2px #ADFF2F;
+          }
+          h3{
+            color: #fff;
+          }
+          ol{
+            font-size: 15px;
+            padding-right: 5px;
+          }
+          li{
+            padding-bottom: 5px;
+          }
+          #a1{
+            float: left;
+            width:50%;
+            min-width: 400px;
+            color: #fff;
+          }
+          #a2{
+            float: left;
+            width:400px;
+            color: #fff;
+          }
+          #spending{
+            width: 100%;
+            min-width: 900px;
+            height:600px;
+          }
           .kingaku {
+            color: #353535;
             padding-left: 20px;
-            overflow:auto;
-            height:600px;/*ここはご自由に*/
-            width: 400px;/*ここはご自由に*/
-            background-color: #eee;
+            overflow:scroll;
+            height:500px;/*ここはご自由に*/
+            width: 100%;/*ここはご自由に*/
+            min-width: 400px;
+            margin-right: 20px;
+            background-color: #CCC;
           }
           .input {
             padding-bottom: 5px;
           }
           .goukei_kingaku {
+            color:  #353535;
             padding-left: 20px;
-            overflow:auto;
-            height:600px;/*ここはご自由に*/
-            width: 400px;/*ここはご自由に*/
-            background-color: rgb(212, 255, 189);
+            overflow:scroll;
+            height:500px;/*ここはご自由に*/
+            width: 100%;/*ここはご自由に*/
+            min-width: 400px;
+            background-color:#DDD;
           }
+          img{
+            width:100%;
+            height:auto;
+          }
+          #page-top {
+              font-size: 10;
+              position: fixed;
+              bottom: 16px;
+              right: 16px;
+              opacity: 0;
+              background-color: #BBB;
+              border-radius: 20px;
+          }
+          #page-top.fade-in {
+              color: #ADFF2F;
+              font-size: 60px;
+              opacity: 0.6;
+              transition: opacity 1s;
+          }
+          header {
+            padding:10px;
+            background: #ADFF2F;
+          }
+
+          header:hover:after{
+            content:"メニューアイコンから使い方ガイドをご覧になれます。";
+            color: #353535;
+          }
+
+          #nav-drawer {
+            position: relative;
+          }
+
+          .nav-unshown {
+            display:none;
+          }
+
+          #nav-open {
+            display: inline-block;
+            width: 30px;
+            height: 22px;
+            vertical-align: middle;
+          }
+
+          #nav-open span, #nav-open span:before, #nav-open span:after {
+            position: absolute;
+            height: 3px;
+            width: 25px;
+            border-radius: 3px;
+            background: #555;
+            display: block;
+            content: '';
+            cursor: pointer;
+          }
+          #nav-open span:before {
+            bottom: -8px;
+          }
+          #nav-open span:after {
+            bottom: -16px;
+          }
+
+
+          #nav-close {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0;
+            transition: .3s ease-in-out;
+          }
+
+          #nav-content {/*ナビ中身*/
+            color: #353535;
+            font-size: 20px;
+            overflow: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;/*最前面に*/
+            width: 90%;/*右側に隙間を作る（閉じるカバーを表示）*/
+            max-width: 330px;/*最大幅（調整してください）*/
+            height: 100%;
+            background: #DDD;/*背景色*/
+            transition: .3s ease-in-out;/*滑らかに表示*/
+            -webkit-transform: translateX(-105%);
+            transform: translateX(-105%);/*左に隠しておく*/
+          }
+
+          #nav-input:checked ~ #nav-close {
+            display: block;/*カバーを表示*/
+            opacity: .5;
+          }
+
+          #nav-input:checked ~ #nav-content {
+            -webkit-transform: translateX(0%);
+            transform: translateX(0%);/*中身を表示（右へスライド）*/
+            box-shadow: 6px 0 25px rgba(0,0,0,.15);
+          }
+
+          #guide{
+            background: #353535;
+            color: #ADFF2F;
+            font-size: 30px;
+          }
+
         </style>
     </head>
     <body>
-    <form acrion="" method="POST">
+      <header>
+        <div id="nav-drawer">
+          <input id="nav-input" type="checkbox" class="nav-unshown">
+          <label id="nav-open" for="nav-input"><span></span></label>
+          <label class="nav-unshown" id="nav-close" for="nav-input"></label>
+          <div id="nav-content">
+            <p id="guide">GUIDE</p>
+            <ol>
+              <li>入力欄左より支出した項目を以下の５項目から選択してください。
+                <ul>
+                  <li>grocery bills(食費)</li>
+                  <li>hydro bills(水道代)</li>
+                  <li>electric bill(電気代)</li>
+                  <li>Gas bill(ガス代)</li>
+                  <li>telephone bill(携帯代)</li>
+                </ul>
+              </li>
+              <li>次に隣の欄に支出した金額を入力してください。</li>
+              <li>”send”ボタンを押すと支出金額を保存します。</li>
+              <li>「支出一覧」「項目別の支出一覧」「支出の円グラフ」が更新されたことを確認してください。</li>
+            </ol>
+          </div>
+        </div>
+      </header>
+      <img src="{% static "images/kakeibo.jpg"%}" alt="家計簿">
+      <h1></h1>
+
+      <h3>入力欄</h3>
+      <form acrion="" method="POST">
           {% csrf_token %}
 
           <select name="category">
@@ -45,20 +235,55 @@
           <button type="submit">send</button>
     </form>
 
+    <div id="spending">
+      <div id="a1">
+        <h2>支出一覧</h2>
+        <div id="kingaku" class="kingaku row col-md-6">
+          {% for d in data %}
+              <p>{{ d.0 }}   {{ d.1 }}</p>
+          {% endfor %}
+        </div>
+      </div>
 
-    <div id="kingaku" class="kingaku row col-md-6">
-      {% for d in data %}
-          <p>{{ d.0 }}   {{ d.1 }}</p>
-      {% endfor %}
+      <div id="a1">
+        <h2>項目別の支出一覧</h2>
+        <div id="goukei_kingaku" class="goukei_kingaku row col-md-6">
+          <p>
+            {% for key,value in category_sum.items %}
+                <p>{{ key }} {{ value }}</p>
+            {% endfor %}
+          </p>
+        </div>
+      </div>
     </div>
+    <div id="a2">
+      <h2>支出の円グラフ</h2>
+    </div>
+    <img src="{% static "images/simple.png"%}" alt="no">
 
-    <div id="goukei_kingaku" class="goukei_kingaku row col-md-6">
-      <p>
-        {% for key,value in category_sum.items %}
-            <p>{{ key }} {{ value }}</p>
-        {% endfor %}
-      </p>
-    </div>
-      <img src="{% static "images/simple.png"%}" alt="no">
-    </body>
+    <div id="page-top" class="blogicon-chevron-up"><p>page top</p></div>
+      <script>
+      function getScrolled() {
+       return ( window.pageYOffset !== undefined ) ? window.pageYOffset: document.documentElement.scrollTop;
+      }
+      var topButton = document.getElementById( 'page-top' );
+        window.onscroll = function() {
+        ( getScrolled() > 500 ) ? topButton.classList.add( 'fade-in' ): topButton.classList.remove( 'fade-in' );
+      };
+
+      function scrollToTop() {
+        var scrolled = getScrolled();
+        window.scrollTo( 0, Math.floor( scrolled / 2 ) );
+        if ( scrolled > 0 ) {
+          window.setTimeout( scrollToTop, 30 );
+        }
+      };
+
+      topButton.onclick = function() {
+        scrollToTop();
+      };
+
+      </script>
+      </body>
+
 </html>
